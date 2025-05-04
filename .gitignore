@@ -1,2 +1,3 @@
 .env
 node_modules
+execution-engine/node_modules/ssh2/test/fixtures/id_rsa
