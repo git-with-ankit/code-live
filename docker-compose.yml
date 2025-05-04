@@ -1,0 +1,18 @@
+version: '3.8'
+services:
+  js-sandbox:
+    container_name: code-live-js-sandbox  # Explicit name
+    image: code-live-js-sandbox  # Explicit image name
+    build:
+      context: .
+      dockerfile: docker/javascript.Dockerfile
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 100M
+    networks:
+      - sandbox-net
+networks:
+  sandbox-net:
+    internal: true  # No internet access

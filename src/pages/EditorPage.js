@@ -6,6 +6,7 @@ import Editor from "../components/Editor"
 import { initSocket } from "../socket";
 import ACTIONS from "../Actions";
 import { useLocation,useNavigate,Navigate,useParams } from "react-router-dom";
+import useSandbox from "../hooks/useSandbox";
 
 
 const EditorPage = ()=>{
@@ -15,6 +16,7 @@ const EditorPage = ()=>{
     const {roomId} = useParams();
     const reactNavigator = useNavigate();
     const codeRef = useRef(null);
+    const {execute,output} = useSandbox();
 
     useEffect(()=>{
         const init = async()=>{
@@ -41,6 +43,7 @@ const EditorPage = ()=>{
                 socketRef.current.emit(ACTIONS.SYNC_CODE,{
                     code: codeRef.current,
                     socketId,
+                    username
                     
                 });
             })
@@ -80,6 +83,7 @@ const EditorPage = ()=>{
     }
 
 
+
     if(!location.state){
         return <Navigate to='/'/>
     }
@@ -108,7 +112,9 @@ const EditorPage = ()=>{
                 <Editor socketRef={socketRef} roomId={roomId} onCodeChange={(code)=>{
                     codeRef.current=code;
                 }}/>
+                <button onClick={()=> execute(codeRef.current)}>Run Code</button>
             </div>
+            <pre>{output}</pre>
         </div>
     )
 }
